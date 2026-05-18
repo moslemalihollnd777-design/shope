@@ -1,355 +1,394 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ar" dir="rtl">
-<head>
-    <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-    <meta charset="UTF-8">
+  <head>
+    <script
+      type="text/javascript"
+      src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
+    ></script>
+    <meta charset="UTF-8" />
     <title>Ali Holland | أفضل المنتجات</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        /* تنسيق إضافي لشبكة عرض المنتجات لكي تظهر بشكل تلقائي تحت قسم الأقسام */
-        .products-section {
-            padding: 30px 5%;
-        }
-        .products-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 25px;
-            margin-top: 20px;
-        }
-        .product-card {
-            background-color: white;
-            border-radius: 8px;
-            padding: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            border: 1px solid #eee;
-        }
-        .product-card img {
-            max-width: 100%;
-            height: 180px;
-            object-fit: contain;
-            margin-bottom: 15px;
-        }
-        .product-title {
-            font-size: 16px;
-            font-weight: bold;
-            margin: 10px 0;
-            color: #2d3436;
-        }
-        .product-price {
-            color: #ff8c00;
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 15px;
-        }
-        .buy-btn {
-            background-color: #ff8c00;
-            color: white;
-            border: none;
-            padding: 10px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-            width: 100%;
-        }
-        .buy-btn:hover {
-            background-color: #e07a00;
-        }
-    </style>
-</head>
+    <link rel="stylesheet" href="css/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <!-- 1: Moved product/hero styles to css/style.css -->
+  </head>
 
-<body>
-
+  <body>
     <header class="header">
-       <div class="nav-links">
-            <div class="cart-wrapper" onclick="openCart()">
-                <div class="cart-icon-container">
-                    <i class="fas fa-shopping-cart"></i>
-                    <span id="cart-count">0</span>
-                </div>
-            </div>
-
-            <a href="index.html" class="active">الرئيسية</a>
-            
-            <div class="nav-item-dropdown" style="display: inline-block;">
-                <a href="javascript:void(0)" onclick="toggleCategoriesMenu()" id="categories-nav-btn">الأقسام</a>
-                <div id="text-categories-dropdown" class="dropdown-flat">
-                    <a href="javascript:void(0)" onclick="filterCategory('electronics')">الإلكترونيات</a>
-                    <a href="javascript:void(0)" onclick="filterCategory('clothes')">ملابس</a>
-                    <a href="javascript:void(0)" onclick="filterCategory('shoes')">أحذية</a>
-                    <a href="javascript:void(0)" onclick="filterCategory('accessories')">إكسسوارات</a>
-                    <a href="javascript:void(0)" onclick="filterCategory('watches')">ساعات</a>
-                    <a href="javascript:void(0)" onclick="filterCategory('perfumes')">عطورات</a>
-                    <a href="javascript:void(0)" onclick="filterCategory('herbs')">أعشاب</a>
-                    <a href="javascript:void(0)" onclick="filterCategory('supermarket')">سوبر ماركت</a>
-                </div>
-            </div>
-
-            <span id="auth-nav-links">
-                <a href="login.html">دخول</a>
-                <a href="register.html" class="btn-register-nav">إنشاء حساب</a>
-            </span>
+      <div class="nav-links">
+        <div class="cart-wrapper" onclick="openCart()">
+          <div class="cart-icon-container">
+            <i class="fas fa-shopping-cart"></i>
+            <span id="cart-count">0</span>
+          </div>
         </div>
 
-        <div class="search-bar">
-            <input type="text" id="search-input" placeholder="ابحث عن منتج...">
-            <button onclick="searchProducts()">بحث</button>
+        <a href="index.html" class="active">الرئيسية</a>
 
-            <div class="lang-switcher-nav">
-                <span onclick="changeLanguage('ar')">AR</span>
-                <span onclick="changeLanguage('en')">EN</span>
-                <span onclick="changeLanguage('nl')">NL</span>
-            </div>
+        <div class="nav-item-dropdown" style="display: inline-block">
+          <a
+            href="javascript:void(0)"
+            onclick="toggleCategoriesMenu()"
+            id="categories-nav-btn"
+            >الأقسام</a
+          >
+          <div id="text-categories-dropdown" class="dropdown-flat">
+            <a href="javascript:void(0)" onclick="filterCategory('electronics')"
+              >الإلكترونيات</a
+            >
+            <a href="javascript:void(0)" onclick="filterCategory('clothes')"
+              >ملابس</a
+            >
+            <a href="javascript:void(0)" onclick="filterCategory('shoes')"
+              >أحذية</a
+            >
+            <a href="javascript:void(0)" onclick="filterCategory('accessories')"
+              >إكسسوارات</a
+            >
+            <a href="javascript:void(0)" onclick="filterCategory('watches')"
+              >ساعات</a
+            >
+            <a href="javascript:void(0)" onclick="filterCategory('perfumes')"
+              >عطورات</a
+            >
+            <a href="javascript:void(0)" onclick="filterCategory('herbs')"
+              >أعشاب</a
+            >
+            <a href="javascript:void(0)" onclick="filterCategory('supermarket')"
+              >سوبر ماركت</a
+            >
+          </div>
         </div>
 
-        <div class="logo">
-            <h2 style="color: #ff8c00;">Ali <span style="color: #2d3436;">Holland</span></h2>
+        <span id="auth-nav-links">
+          <a href="auth/login.html">دخول</a>
+          <a href="auth/register.html" class="btn-register-nav">إنشاء حساب</a>
+        </span>
+      </div>
+
+      <div class="search-bar">
+        <input type="text" id="search-input" placeholder="ابحث عن منتج..." />
+        <button onclick="searchProducts()">بحث</button>
+
+        <div class="lang-switcher-nav">
+          <span onclick="changeLanguage('ar')">AR</span>
+          <span onclick="changeLanguage('en')">EN</span>
+          <span onclick="changeLanguage('nl')">NL</span>
         </div>
+      </div>
+
+      <div class="logo">
+        <h2 style="color: #ff8c00">
+          Ali <span style="color: #2d3436">Holland</span>
+        </h2>
+      </div>
     </header>
 
     <main>
-        <section class="hero-section">
-            <div class="hero-image">
-                <img src="logo.png.jpeg" alt="Ali Holland">
-            </div>
-            
-            <div class="hero-text">
-                <h1>أفضل المنتجات بأفضل<br>الأسعار</h1>
-                <p>تسوق أحدث المنتجات الأوروبية والعالمية بسهولة وأمان</p>
-                <a href="#products-target" class="btn-shop">ابدأ التسوق</a>
-            </div>
-        </section>
+      <section class="hero-section">
+        <div class="hero-image">
+          <!-- 7: Logo renamed to assets/logo.jpg -->
+          <img src="assets/logo.jpg" alt="Ali Holland" />
+        </div>
 
-        <section class="categories-container" id="categories-target">
-            <div class="section-header">
-                <h3>تسوق حسب الأقسام</h3>
-                <p>اختر التصنيف الذي تبحث عنه للوصول سريعاً لمنتجاتك</p>
-            </div>
-            
-            <div class="categories-grid">
-                <a href="javascript:void(0)" class="cat-card" onclick="filterCategory('electronics')">
-                    <span class="cat-icon">💻</span>
-                    <span class="cat-name">الإلكترونيات</span>
-                </a>
+        <div class="hero-text">
+          <h1>أفضل المنتجات بأفضل<br />الأسعار</h1>
+          <p>تسوق أحدث المنتجات الأوروبية والعالمية بسهولة وأمان</p>
+          <a href="#products-target" class="btn-shop">ابدأ التسوق</a>
+        </div>
+      </section>
 
-                <a href="javascript:void(0)" class="cat-card" onclick="filterCategory('clothes')">
-                    <span class="cat-icon">👕</span>
-                    <span class="cat-name">ملابس</span>
-                </a>
+      <section class="categories-container" id="categories-target">
+        <div class="section-header">
+          <h3>تسوق حسب الأقسام</h3>
+          <p>اختر التصنيف الذي تبحث عنه للوصول سريعاً لمنتجاتك</p>
+        </div>
 
-                <a href="javascript:void(0)" class="cat-card" onclick="filterCategory('shoes')">
-                    <span class="cat-icon">👟</span>
-                    <span class="cat-name">أحذية</span>
-                </a>
+        <div class="categories-grid">
+          <a
+            href="javascript:void(0)"
+            class="cat-card"
+            onclick="filterCategory('electronics')"
+          >
+            <span class="cat-icon">💻</span>
+            <span class="cat-name">الإلكترونيات</span>
+          </a>
 
-                <a href="javascript:void(0)" class="cat-card" onclick="filterCategory('accessories')">
-                    <span class="cat-icon">💍</span>
-                    <span class="cat-name">إكسسوارات</span>
-                </a>
+          <a
+            href="javascript:void(0)"
+            class="cat-card"
+            onclick="filterCategory('clothes')"
+          >
+            <span class="cat-icon">👕</span>
+            <span class="cat-name">ملابس</span>
+          </a>
 
-                <a href="javascript:void(0)" class="cat-card" onclick="filterCategory('watches')">
-                    <span class="cat-icon">⌚</span>
-                    <span class="cat-name">ساعات</span>
-                </a>
+          <a
+            href="javascript:void(0)"
+            class="cat-card"
+            onclick="filterCategory('shoes')"
+          >
+            <span class="cat-icon">👟</span>
+            <span class="cat-name">أحذية</span>
+          </a>
 
-                <a href="javascript:void(0)" class="cat-card" onclick="filterCategory('perfumes')">
-                    <span class="cat-icon">✨</span>
-                    <span class="cat-name">عطورات</span>
-                </a>
+          <a
+            href="javascript:void(0)"
+            class="cat-card"
+            onclick="filterCategory('accessories')"
+          >
+            <span class="cat-icon">💍</span>
+            <span class="cat-name">إكسسوارات</span>
+          </a>
 
-                <a href="javascript:void(0)" class="cat-card" onclick="filterCategory('herbs')">
-                    <span class="cat-icon">🌿</span>
-                    <span class="cat-name">أعشاب</span>
-                </a>
+          <a
+            href="javascript:void(0)"
+            class="cat-card"
+            onclick="filterCategory('watches')"
+          >
+            <span class="cat-icon">⌚</span>
+            <span class="cat-name">ساعات</span>
+          </a>
 
-                <a href="javascript:void(0)" class="cat-card" onclick="filterCategory('supermarket')">
-                    <span class="cat-icon">🛒</span>
-                    <span class="cat-name">سوبر ماركت</span>
-                </a>
-            </div>
-        </section>
+          <a
+            href="javascript:void(0)"
+            class="cat-card"
+            onclick="filterCategory('perfumes')"
+          >
+            <span class="cat-icon">✨</span>
+            <span class="cat-name">عطورات</span>
+          </a>
 
-        <section class="products-section" id="products-target">
-            <h3 id="section-title">كل المنتجات المعروضة</h3>
-            <div class="products-grid" id="products-container">
-                <p style="text-align: center; color: #888; grid-column: 1/-1;">جاري تحميل المنتجات الحقيقية من قاعدة البيانات...</p>
-            </div>
-        </section>
+          <a
+            href="javascript:void(0)"
+            class="cat-card"
+            onclick="filterCategory('herbs')"
+          >
+            <span class="cat-icon">🌿</span>
+            <span class="cat-name">أعشاب</span>
+          </a>
+
+          <a
+            href="javascript:void(0)"
+            class="cat-card"
+            onclick="filterCategory('supermarket')"
+          >
+            <span class="cat-icon">🛒</span>
+            <span class="cat-name">سوبر ماركت</span>
+          </a>
+        </div>
+      </section>
+
+      <section class="products-section" id="products-target">
+        <h3 id="section-title">كل المنتجات المعروضة</h3>
+        <div class="products-grid" id="products-container">
+          <p style="text-align: center; color: #888; grid-column: 1/-1">
+            جاري تحميل المنتجات الحقيقية من قاعدة البيانات...
+          </p>
+        </div>
+      </section>
     </main>
 
     <div id="google_translate_element"></div>
 
     <script type="text/javascript">
-    function googleTranslateElementInit() {
-        new google.translate.TranslateElement({
-            pageLanguage: 'ar',
-            includedLanguages: 'en,nl,ar',
+      function googleTranslateElementInit() {
+        new google.translate.TranslateElement(
+          {
+            pageLanguage: "ar",
+            includedLanguages: "en,nl,ar",
             layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-            autoDisplay: false
-        }, 'google_translate_element');
-    }
+            autoDisplay: false,
+          },
+          "google_translate_element",
+        );
+      }
 
-    function changeLanguage(langCode) {
-        var select = document.querySelector('select.goog-te-combo');
+      function changeLanguage(langCode) {
+        var select = document.querySelector("select.goog-te-combo");
         if (select) {
-            select.value = langCode;
-            select.dispatchEvent(new Event('change'));
+          select.value = langCode;
+          select.dispatchEvent(new Event("change"));
         } else {
-            console.log("جاري محاولة الاتصال بمحرك الترجمة...");
-            setTimeout(function() {
-                changeLanguage(langCode);
-            }, 1000);
+          console.log("جاري محاولة الاتصال بمحرك الترجمة...");
+          setTimeout(function () {
+            changeLanguage(langCode);
+          }, 1000);
         }
-    }
+      }
     </script>
 
-    <div id="paymentModal" class="modal-overlay" style="display: none;">
-        <div class="modal-content payment-card">
-            <div class="modal-header">
-                <h3>الدفع الآمن 💳</h3>
-                <p>أدخل بيانات البطاقة لإتمام الطلب</p>
-            </div>
-            
-            <form id="fake-payment-form">
-                <div class="input-group">
-                    <label>اسم صاحب البطاقة</label>
-                    <input type="text" id="cardName" placeholder="Ali Holland" required>
-                </div>
-                <div id="cart-items"></div>
-                <div class="input-group">
-                    <label>رقم البطاقة</label>
-                    <input type="text" id="cardNumber" placeholder="1234 5678 9101 1121" maxlength="19" required>
-                </div>
-
-                <div style="display: flex; gap: 10px;">
-                    <div class="input-group" style="width: 60%;">
-                        <label>تاريخ الانتهاء</label>
-                        <input type="text" id="cardDate" placeholder="MM/YY" maxlength="5" required>
-                    </div>
-                    <div class="input-group" style="width: 40%;">
-                        <label>رمز الـ CVV</label>
-                        <input type="text" id="cardCVV" placeholder="123" maxlength="3" required>
-                    </div>
-                </div>
-
-                <div class="total-bar">
-                    <span>المجموع الكلي:</span>
-                    <span id="final-price-display">0€</span>
-                </div>
-
-                <button type="submit" class="btn-pay" id="payButton">
-                    <span id="btn-text">تأكيد الدفع والطلب</span>
-                    <div id="loader" class="loader-spinner" style="display: none;"></div>
-                </button>
-                
-                <button type="button" onclick="closePayment()" class="btn-cancel">إلغاء والعودة للسلة</button>
-            </form>
+    <div id="paymentModal" class="modal-overlay" style="display: none">
+      <div class="modal-content payment-card">
+        <div class="modal-header">
+          <h3>الدفع الآمن 💳</h3>
+          <p>أدخل بيانات البطاقة لإتمام الطلب</p>
         </div>
+
+        <form id="fake-payment-form">
+          <div class="input-group">
+            <label>اسم صاحب البطاقة</label>
+            <input
+              type="text"
+              id="cardName"
+              placeholder="Ali Holland"
+              required
+            />
+          </div>
+          <div id="cart-items"></div>
+          <div class="input-group">
+            <label>رقم البطاقة</label>
+            <input
+              type="text"
+              id="cardNumber"
+              placeholder="1234 5678 9101 1121"
+              maxlength="19"
+              required
+            />
+          </div>
+
+          <div style="display: flex; gap: 10px">
+            <div class="input-group" style="width: 60%">
+              <label>تاريخ الانتهاء</label>
+              <input
+                type="text"
+                id="cardDate"
+                placeholder="MM/YY"
+                maxlength="5"
+                required
+              />
+            </div>
+            <div class="input-group" style="width: 40%">
+              <label>رمز الـ CVV</label>
+              <input
+                type="text"
+                id="cardCVV"
+                placeholder="123"
+                maxlength="3"
+                required
+              />
+            </div>
+          </div>
+
+          <div class="total-bar">
+            <span>المجموع الكلي:</span>
+            <span id="final-price-display">0€</span>
+          </div>
+
+          <button type="submit" class="btn-pay" id="payButton">
+            <span id="btn-text">تأكيد الدفع والطلب</span>
+            <div id="loader" class="loader-spinner" style="display: none"></div>
+          </button>
+
+          <button type="button" onclick="closePayment()" class="btn-cancel">
+            إلغاء والعودة للسلة
+          </button>
+        </form>
+      </div>
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-auth-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
 
     <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyD9vKm8pAEV7RijHNxgd5B9dr1kaUS-NxA",
-            authDomain: "alaa-moslem.firebaseapp.com",
-            projectId: "alaa-moslem",
-            storageBucket: "alaa-moslem.firebasestorage.app",
-            messagingSenderId: "821066430593",
-            appId: "1:821066430593:web:aa854258446e57a1ad3580",
-            measurementId: "G-62TP2N0NN1"
-        };
+      // 2: Firebase initialized in js/firebase-config.js (centralized)
+      // `db` and `auth` are available globally
 
-        if (!firebase.apps.length) {
-            firebase.initializeApp(firebaseConfig);
+      function loadProducts(categoryFilter = "all") {
+        const container = document.getElementById("products-container");
+        container.innerHTML =
+          '<p style="text-align: center; color: #888; grid-column: 1/-1;">جاري تحميل المنتجات...</p>';
+
+        let productsRef = db.collection("products");
+
+        if (categoryFilter !== "all") {
+          productsRef = productsRef.where("category", "==", categoryFilter);
+          document.getElementById("section-title").innerText =
+            "قسم: " + categoryFilter;
+        } else {
+          document.getElementById("section-title").innerText =
+            "كل المنتجات المعروضة";
         }
-        const db = firebase.firestore();
-        const auth = firebase.auth();
 
-        function loadProducts(categoryFilter = 'all') {
-            const container = document.getElementById('products-container');
-            container.innerHTML = '<p style="text-align: center; color: #888; grid-column: 1/-1;">جاري تحميل المنتجات...</p>';
+        productsRef
+          .get()
+          .then((querySnapshot) => {
+            container.innerHTML = "";
 
-            let productsRef = db.collection('products');
-            
-            if (categoryFilter !== 'all') {
-                productsRef = productsRef.where('category', '==', categoryFilter);
-                document.getElementById('section-title').innerText = "قسم: " + categoryFilter;
-            } else {
-                document.getElementById('section-title').innerText = "كل المنتجات المعروضة";
+            if (querySnapshot.empty) {
+              container.innerHTML =
+                '<p style="grid-column: 1/-1; text-align: center; color: #888;">لا توجد منتجات متوفرة حالياً في هذا القسم.</p>';
+              return;
             }
 
-            productsRef.get().then((querySnapshot) => {
-                container.innerHTML = ''; 
-                
-                if (querySnapshot.empty) {
-                    container.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #888;">لا توجد منتجات متوفرة حالياً في هذا القسم.</p>';
-                    return;
-                }
-
-                querySnapshot.forEach((doc) => {
-                    const product = doc.data();
-                    const productCard = `
+            querySnapshot.forEach((doc) => {
+              const product = doc.data();
+              const productCard = `
                         <div class="product-card">
-                            <img src="${product.imageUrl || 'logo.png.jpeg'}" alt="${product.title}">
+                            <img src="${product.imageUrl || "assets/logo.jpg"}" alt="${product.title}">
                             <div class="product-title">${product.title}</div>
                             <div class="product-price">€${product.price}</div>
                             <button class="buy-btn" onclick="addToCart('${doc.id}', '${product.title}', ${product.price})">إضافة للسلة</button>
                         </div>
                     `;
-                    container.innerHTML += productCard;
-                });
-            }).catch((error) => {
-                console.error("خطأ في جلب البيانات الحقيقية: ", error);
-                container.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: red;">حدث خطأ أثناء تحميل المنتجات.</p>';
+              container.innerHTML += productCard;
             });
-        }
+          })
+          .catch((error) => {
+            console.error("خطأ في جلب البيانات الحقيقية: ", error);
+            container.innerHTML =
+              '<p style="grid-column: 1/-1; text-align: center; color: red;">حدث خطأ أثناء تحميل المنتجات.</p>';
+          });
+      }
 
-        function filterCategory(category) {
-            loadProducts(category);
-            document.getElementById('products-target').scrollIntoView({ behavior: 'smooth' });
-        }
+      function filterCategory(category) {
+        loadProducts(category);
+        document
+          .getElementById("products-target")
+          .scrollIntoView({ behavior: "smooth" });
+      }
 
-        // كود الـ Navbar المطور بدون طرد أو تحويل قسري للبائع
-        auth.onAuthStateChanged(user => {
-            const authLinksContainer = document.getElementById('auth-nav-links');
-            if (user) {
-                db.collection("users").doc(user.uid).get().then(doc => {
-                    let sellerLink = "";
-                    if (doc.exists && doc.data().role === 'seller') {
-                        sellerLink = `<a href="seller.html" style="color: #ff8c00; font-weight: bold; margin-left: 15px;">لوحة تحكم البائع</a>`;
-                    }
-                    
-                    authLinksContainer.innerHTML = `
+      // كود الـ Navbar المطور بدون طرد أو تحويل قسري للبائع
+      auth.onAuthStateChanged((user) => {
+        const authLinksContainer = document.getElementById("auth-nav-links");
+        if (user) {
+          db.collection("users")
+            .doc(user.uid)
+            .get()
+            .then((doc) => {
+              let sellerLink = "";
+              if (doc.exists && doc.data().role === "seller") {
+                sellerLink = `<a href="seller/seller.html" style="color: #ff8c00; font-weight: bold; margin-left: 15px;">لوحة تحكم البائع</a>`;
+              }
+
+              authLinksContainer.innerHTML = `
                         ${sellerLink}
                         <a href="javascript:void(0)" onclick="logoutUser()">تسجيل خروج</a>
                     `;
-                });
-            } else {
-                authLinksContainer.innerHTML = `
-                    <a href="login.html">دخول</a>
-                    <a href="register.html" class="btn-register-nav">إنشاء حساب</a>
-                `;
-            }
-        });
-
-        function logoutUser() {
-            auth.signOut().then(() => {
-                window.location.reload();
             });
+        } else {
+          authLinksContainer.innerHTML = `
+                    <a href="auth/login.html">دخول</a>
+                    <a href="auth/register.html" class="btn-register-nav">إنشاء حساب</a>
+                `;
         }
+      });
 
-        window.onload = function() {
-            loadProducts();
-        };
+      function logoutUser() {
+        auth.signOut().then(() => {
+          window.location.reload();
+        });
+      }
+
+      window.onload = function () {
+        loadProducts();
+      };
     </script>
 
-    <script src="main.js"></script>
-</body>
+    <script src="js/main.js"></script>
+  </body>
 </html>
