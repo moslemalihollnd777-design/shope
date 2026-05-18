@@ -66,6 +66,7 @@ python -m SimpleHTTPServer 8000
 ```
 
 Then open your browser to:
+
 - **Shop**: `http://localhost:8000`
 - **Login**: `http://localhost:8000/auth/login.html`
 - **Register**: `http://localhost:8000/auth/register.html`
@@ -91,6 +92,7 @@ Install the **Live Server** extension in VS Code and right-click `index.html` â†
 ### Working on a Feature
 
 1. **Create a branch** from `main`:
+
    ```bash
    git checkout main
    git pull origin main
@@ -100,12 +102,14 @@ Install the **Live Server** extension in VS Code and right-click `index.html` â†
 2. **Make your changes** and test locally on `http://localhost:8000`.
 
 3. **Commit your work**:
+
    ```bash
    git add .
    git commit -m "Feature: brief description of changes"
    ```
 
 4. **Push to remote**:
+
    ```bash
    git push origin feature/your-feature-name
    ```
@@ -115,6 +119,7 @@ Install the **Live Server** extension in VS Code and right-click `index.html` â†
 ### Current Branch: `refactor/project-structure`
 
 This branch contains the project restructuring:
+
 - Organized files into logical folders (`auth/`, `css/`, `js/`, `seller/`, `assets/`)
 - Centralized CSS (removed all inline styles)
 - Centralized Firebase config
