@@ -1,0 +1,13 @@
+# Local Firebase configuration with secret keys
+js/firebase-config.js
+
+# Node modules (if using npm in future)
+node_modules/
+package-lock.json
+
+# IDE and OS files
+.vscode/
+.DS_Store
+*.swp
+*.swo
+*~
