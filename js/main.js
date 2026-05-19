@@ -156,7 +156,7 @@ function renderCartItems() {
 
                 </div>
 
-                <button onclick="removeFromCart('${item.id}')">
+                <button data-remove-id="${item.id}">
 
                     حذف
 
@@ -195,7 +195,7 @@ function searchProducts() {
     const container = document.getElementById('products-container');
 
     container.innerHTML = `
-        <p style="text-align:center;">
+        <p class="center-muted-full">
             جاري البحث...
         </p>
     `;
@@ -234,12 +234,7 @@ function searchProducts() {
 
                     <p>€${product.price}</p>
 
-                    <button onclick="addToCart(
-                        '${doc.id}',
-                        '${escapeQuotes(title)}',
-                        ${product.price},
-                        '${product.imageUrl || 'assets/logo.jpg'}'
-                    )">
+                    <button type="button" data-product-id="${doc.id}" data-product-title="${escapeHTML(title)}" data-product-price="${product.price}">
 
                         إضافة للسلة
 
@@ -256,7 +251,7 @@ function searchProducts() {
         if (!found) {
 
             container.innerHTML = `
-                <p style="text-align:center;">
+                <p class="center-muted-full">
                     لا توجد نتائج
                 </p>
             `;
@@ -353,5 +348,12 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
     }
+
+    document.body.addEventListener('click', (event) => {
+        const removeBtn = event.target.closest('button[data-remove-id]');
+        if (removeBtn) {
+            removeFromCart(removeBtn.dataset.removeId);
+        }
+    });
 
 });

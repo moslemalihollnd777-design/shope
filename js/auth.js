@@ -100,3 +100,58 @@ if (loginFormElement) {
         });
     });
 }
+
+function openResetModal() {
+    const resetModal = document.getElementById('resetModal');
+    if (resetModal) {
+        resetModal.classList.remove('hidden');
+    }
+}
+
+function closeResetModal() {
+    const resetModal = document.getElementById('resetModal');
+    if (resetModal) {
+        resetModal.classList.add('hidden');
+    }
+}
+
+function sendResetCode() {
+    const email = document.getElementById('resetEmail').value.trim();
+    if (email === "") {
+        alert("يرجى إدخال البريد الإلكتروني أولاً!");
+        return;
+    }
+
+    auth
+        .sendPasswordResetEmail(email)
+        .then(() => {
+            alert("تم إرسال رابط إعادة تعيين كلمة المرور الحقيقي إلى بريدك الإلكتروني بنجاح!");
+            closeResetModal();
+        })
+        .catch((error) => {
+            console.error("خطأ في استعادة كلمة السر:", error);
+            alert("حدث خطأ: " + error.message);
+        });
+}
+
+function bindAuthPageEvents() {
+    const forgotLink = document.querySelector('.forgot-password');
+    if (forgotLink) {
+        forgotLink.addEventListener('click', (event) => {
+            event.preventDefault();
+            openResetModal();
+        });
+    }
+
+    const resetCloseButton = document.getElementById('resetCloseButton');
+    if (resetCloseButton) {
+        resetCloseButton.addEventListener('click', closeResetModal);
+    }
+
+    const resetSendButton = document.getElementById('resetSendBtn');
+    if (resetSendButton) {
+        resetSendButton.addEventListener('click', sendResetCode);
+    }
+}
+
+document.addEventListener('DOMContentLoaded', bindAuthPageEvents);

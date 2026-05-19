@@ -1229,6 +1229,138 @@ img {
     /* يجعل النص يتبع اتجاه اللغة تلقائياً (يمين للعربي ويسار للأجنبي) */
 }
 
+.text-center {
+    text-align: center;
+}
+
+.mb-25 {
+    margin-bottom: 25px;
+}
+
+.mt-10 {
+    margin-top: 10px;
+}
+
+.btn-link {
+    color: #ff8c00;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.btn-link:hover {
+    opacity: 0.9;
+}
+
+.type-icon {
+    font-size: 2rem;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.type-icon.primary {
+    color: #ff8c00;
+}
+
+.type-icon.secondary {
+    color: #2d3436;
+}
+
+.page-heading {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.form-description {
+    text-align: center;
+    color: #666;
+    margin-bottom: 25px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.stripe-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 18px;
+    border-radius: 10px;
+    background-color: #635bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-weight: 700;
+    transition: background-color 0.25s ease;
+}
+
+.stripe-btn:hover {
+    background-color: #4f47d1;
+}
+
+.submit-btn {
+    background-color: #e07a3f;
+    color: white;
+    border: none;
+    padding: 14px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.3s;
+}
+
+.submit-btn:hover {
+    background-color: #ca652b;
+}
+
+.stripe-status {
+    font-size: 13px;
+    color: #666;
+    margin-top: 10px;
+}
+
+.placeholder-page {
+    padding: 40px;
+    text-align: center;
+}
+
+.center-error-full,
+.center-muted-full {
+    grid-column: 1 / -1;
+    text-align: center;
+    color: #888;
+    padding: 20px 0;
+}
+
+.center-error-full {
+    color: #d32f2f;
+}
+
+.commission-card {
+    border-right: 5px solid #ff8c00;
+}
+
+.upload-box {
+    border: 2px dashed #ff8c00;
+    padding: 20px;
+    text-align: center;
+    border-radius: 10px;
+    cursor: pointer;
+    background-color: #fff9f2;
+}
+
+.upload-box:hover {
+    background-color: #fff4e6;
+}
+
+.image-preview {
+    display: none;
+    max-width: 100%;
+    border-radius: 8px;
+    margin-top: 10px;
+}
 
 /* تنسيق الروابط النصية داخل القائمة */
 .dropdown-flat a {

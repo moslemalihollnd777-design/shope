@@ -47,7 +47,7 @@
             <label><input type="checkbox" /> تذكرني</label>
             <a
               href="javascript:void(0)"
-              onclick="handleForgotPassword()"
+              id="forgotPasswordLink"
               class="forgot-password"
               >نسيت كلمة المرور؟</a
             >
@@ -62,7 +62,7 @@
       </div>
     </div>
 
-    <div id="resetModal" class="modal-overlay">
+    <div id="resetModal" class="modal-overlay hidden">
       <div class="modal-content">
         <div class="modal-header">
           <i class="fas fa-lock-open"></i>
@@ -77,8 +77,8 @@
             required
           />
         </div>
-        <button onclick="sendResetCode()" class="btn-send">إرسال الرابط</button>
-        <button onclick="closeModal()" class="btn-cancel">إلغاء</button>
+        <button id="resetSendBtn" class="btn-send">إرسال الرابط</button>
+        <button id="resetCloseButton" class="btn-cancel">إلغاء</button>
       </div>
     </div>
 
@@ -88,42 +88,6 @@
 
     <script src="../js/firebase-config.js"></script>
 
-    <script>
-      // 3: Firebase initialized in ../js/firebase-config.js (centralized)
-      // 1. دالة تفتح النافذة عند الضغط على "نسيت كلمة المرور"
-      function handleForgotPassword() {
-        document.getElementById("resetModal").style.display = "flex";
-      }
-
-      // 2. دالة تغلق النافذة عند الضغط على "إلغاء"
-      function closeModal() {
-        document.getElementById("resetModal").style.display = "none";
-      }
-
-      // 3. دالة حقيقية لإرسال رابط إعادة تعيين كلمة السر عبر البريد الإلكتروني
-      function sendResetCode() {
-        const email = document.getElementById("resetEmail").value.trim();
-        if (email === "") {
-          alert("يرجى إدخال البريد الإلكتروني أولاً!");
-          return;
-        }
-
-        auth
-          .sendPasswordResetEmail(email)
-          .then(() => {
-            alert(
-              "تم إرسال رابط إعادة تعيين كلمة المرور الحقيقي إلى بريدك الإلكتروني بنجاح!",
-            );
-            closeModal();
-          })
-          .catch((error) => {
-            console.error("خطأ في استعادة كلمة السر:", error);
-            alert("حدث خطأ: " + error.message);
-          });
-      }
-    </script>
-
     <script src="../js/auth.js"></script>
-    <script src="../js/main.js"></script>
   </body>
 </html>
