@@ -35,21 +35,37 @@ cd shope
 
 ### 2. Configure Firebase Credentials
 
-The real Firebase configuration is kept local for security:
+The real Firebase configuration is kept local for security.
+
+#### Option A: Use the local config file
 
 ```bash
-# Copy the example config to create the local config
+# Linux / macOS
 cp js/firebase-config.example.js js/firebase-config.js
 
-# Open js/firebase-config.js and replace placeholders with your Firebase project values:
-# - apiKey
-# - authDomain
-# - projectId
-# - storageBucket
-# - messagingSenderId
-# - appId
-# - measurementId
+# Windows PowerShell
+Copy-Item js/firebase-config.example.js js/firebase-config.js
 ```
+
+Open `js/firebase-config.js` and replace the placeholder values with your Firebase project values:
+- `apiKey`
+- `authDomain`
+- `projectId`
+- `storageBucket`
+- `messagingSenderId`
+- `appId`
+- `measurementId`
+
+#### Option B: Use a `.env`-style reference file
+
+Create a local `.env` file from `.env.example` and fill in your Firebase values.
+This file is only a reference for your secrets; the current frontend uses `js/firebase-config.js`.
+
+```bash
+cp .env.example .env
+```
+
+Then copy the values from `.env` into `js/firebase-config.js`.
 
 ⚠️ **Important:** `js/firebase-config.js` is listed in `.gitignore` and should never be committed to Git.
 
