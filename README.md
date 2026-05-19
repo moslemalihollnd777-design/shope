@@ -48,6 +48,7 @@ Copy-Item js/firebase-config.example.js js/firebase-config.js
 ```
 
 Open `js/firebase-config.js` and replace the placeholder values with your Firebase project values:
+
 - `apiKey`
 - `authDomain`
 - `projectId`
