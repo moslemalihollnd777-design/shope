@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <title>لوحة تحكم البائع - Ali Holland</title>
+    <link rel="stylesheet" href="../css/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  </head>
+  <body>
+    <div class="dashboard-container">
+      <aside class="sidebar">
+        <h2>Ali <span class="brand-primary">Holland</span></h2>
+        <nav>
+          <a href="#" class="active"
+            ><i class="fas fa-plus-circle"></i> إضافة منتج</a
+          >
+          <a href="#"><i class="fas fa-box"></i> منتجاتي</a>
+          <a href="#"><i class="fas fa-wallet"></i> الأرباح</a>
+          <a href="#" onclick="logoutSeller()"
+            ><i class="fas fa-sign-out-alt"></i> خروج</a
+          >
+        </nav>
+      </aside>
+
+      <main class="main-content">
+        <header>
+          <h1 id="welcome-msg">مرحباً بك أيها البائع</h1>
+          <div class="stats-cards">
+            <div class="card">
+              <h3>إجمالي المبيعات</h3>
+              <p id="totalSales">0.00 €</p>
+            </div>
+            <div class="card" style="border-right: 5px solid #ff8c00">
+              <h3>عمولة الموقع (4%)</h3>
+              <p id="totalCommission">0.00 €</p>
+            </div>
+          </div>
+        </header>
+
+        <section class="add-product-section">
+          <h2>إضافة منتج جديد للبيع</h2>
+          <form id="productForm">
+            <div class="input-group">
+              <label>اسم المنتج</label>
+              <input
+                type="text"
+                id="pName"
+                placeholder="مثلاً: هاتف آيفون 15"
+                required
+              />
+            </div>
+
+            <div class="input-group">
+              <label><i class="fas fa-align-right"></i> وصف المنتج</label>
+              <textarea
+                id="productDescription"
+                placeholder="اكتب تفاصيل المنتج ومواصفاته هنا..."
+                rows="4"
+                required
+              ></textarea>
+            </div>
+
+            <div class="input-group">
+              <label><i class="fas fa-list"></i> اختر قسم المنتج</label>
+              <select id="productCategory" class="category-select" required>
+                <option value="" disabled selected>
+                  اختر القسم المناسب...
+                </option>
+                <option value="electronics">إلكترونيات</option>
+                <option value="clothes">ملابس</option>
+                <option value="shoes">أحذية</option>
+                <option value="accessories">إكسسوارات</option>
+                <option value="watches">ساعات</option>
+                <option value="perfumes">عطورات</option>
+                <option value="herbs">أعشاب</option>
+                <option value="supermarket">سوبر ماركت</option>
+              </select>
+            </div>
+
+            <div class="input-group">
+              <label>السعر المطلوب (€)</label>
+              <input
+                type="number"
+                step="0.01"
+                id="pPrice"
+                oninput="calculateLiveCommission()"
+                placeholder="0.00"
+                required
+              />
+            </div>
+
+            <div id="liveCommissionBox" class="commission-info">
+              سيتم خصم <strong>4%</strong> عمولة للموقع:
+              <span id="calcValue">0.00</span> €
+            </div>
+
+            <div class="input-group">
+              <label><i class="fas fa-image"></i> صورة المنتج</label>
+              <div
+                class="upload-box"
+                onclick="document.getElementById('productImage').click()"
+                style="
+                  border: 2px dashed #ff8c00;
+                  padding: 20px;
+                  text-align: center;
+                  border-radius: 10px;
+                  cursor: pointer;
+                  background-color: #fff9f2;
+                "
+              >
+                <i
+                  class="fas fa-cloud-upload-alt"
+                  id="uploadIcon"
+                  style="font-size: 30px; color: #ff8c00"
+                ></i>
+                <p id="uploadText">اضغط هنا لرفع صورة</p>
+                <img
+                  id="imagePreview"
+                  src="#"
+                  alt="معاينة"
+                  style="
+                    display: none;
+                    max-width: 100%;
+                    border-radius: 8px;
+                    margin-top: 10px;
+                  "
+                />
+                <input
+                  type="file"
+                  id="productImage"
+                  accept="image/*"
+                  onchange="previewImage(event)"
+                  hidden
+                  required
+                />
+              </div>
+            </div>
+
+            <button type="submit" id="submitBtn" class="add-btn">
+              نشر المنتج الآن
+            </button>
+          </form>
+        </section>
+      </main>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore-compat.js"></script>
+
+    <script src="../js/firebase-config.js"></script>
+
+    <script>
+        // 6: Firebase initialized in ../js/firebase-config.js (centralized)
+        // `db` and `auth` are available globally
+
+        let currentSeller = null;
+        let base64Image = "";
+
+          auth.onAuthStateChanged((user) => {
+              if (user) {
+                  db.collection("users").doc(user.uid).get().then((doc) => {
+                      if (doc.exists) {
+                          const userData = doc.data();
+
+                          // 1. جدار حماية: طرد أي زائر ليس بائعاً
+                          if (userData.role !== 'seller') {
+                              Swal.fire({
+                                  title: 'وصول ممنوع! ⚠️',
+                                  text: 'عذراً، هذه اللوحة مخصصة للحسابات التجارية فقط!',
+                                  icon: 'warning',
+                                  confirmButtonColor: '#ff8c00',
+                                  confirmButtonText: 'العودة للرئيسية'
+                                }).then(() => {
+                                window.location.href = "../index.html";
+                              });
+                          }
+                          // 2. طرد إجباري أنيق للبائع غير الموثق
+                          else if (!userData.profileCompleted) {
+                              Swal.fire({
+                                  title: 'تنبيه أمني هام! ⚠️',
+                                  text: 'عذراً، لا يمكنك تصفح لوحة التحكم. يجب عليك إكمال وثائق متجرك وتفعيل الحساب أولاً.',
+                                  icon: 'error',
+                                  confirmButtonText: 'الانتقال لصفحة التوثيق الحين',
+                                  confirmButtonColor: '#ff8c00',
+                                  allowOutsideClick: false,
+                                  allowEscapeKey: false,
+                                  background: '#ffffff',
+                                  backdrop: `rgba(0,0,0,0.7) blur(8px)`
+                              }).then((result) => {
+                                  if (result.isConfirmed) {
+                                      window.location.href = "complete-seller-profile.html";
+                                  }
+                              });
+                          }
+                          // 3. السماح بالدخول إذا كان بائعاً وموثقاً
+                          else {
+                              currentSeller = user;
+                              const welcomeMsg = document.getElementById('welcome-msg');
+                              if (welcomeMsg) {
+                                  welcomeMsg.innerText = `مرحباً بك، متجر ${userData.shopName || user.email}`;
+                              }
+                          }
+                      } else {
+                          window.location.href = "../auth/login.html";
+                      }
+                  }).catch(() => {
+                      window.location.href = "../auth/login.html";
+                  });
+              } else {
+                      window.location.href = "../auth/login.html";
+          });
+
+          // 1. دالة حساب العمولة الحية 4%
+          function calculateLiveCommission() {
+              const priceInput = document.getElementById('pPrice');
+              const displayValue = document.getElementById('calcValue');
+              const price = parseFloat(priceInput.value);
+
+              if (price > 0) {
+                  const commission = price * 0.04;
+                  displayValue.innerText = commission.toFixed(2);
+              } else {
+                  displayValue.innerText = "0.00";
+              }
+          }
+
+          // 2. معالجة وتجهيز صورة المنتج الحقيقية
+          function previewImage(event) {
+              const file = event.target.files[0];
+              if (!file) return;
+
+              const reader = new FileReader();
+              reader.onload = function() {
+                  const output = document.getElementById('imagePreview');
+                  output.src = reader.result;
+                  output.style.display = 'block';
+
+                  base64Image = reader.result;
+
+                  document.getElementById('uploadIcon').style.display = 'none';
+                  document.getElementById('uploadText').style.display = 'none';
+              };
+              reader.readAsDataURL(file);
+          }
+
+          // 3. رفع ونشر المنتج الفعلي في قاعدة البيانات تلقائياً
+          document.getElementById('productForm').onsubmit = function(e) {
+              e.preventDefault();
+
+              if (!currentSeller) {
+                  Swal.fire({
+                      title: 'خطأ',
+                      text: 'انتهت جلسة تسجيل الدخول، يرجى إعادة الدخول للموقع.',
+                      icon: 'error',
+                      confirmButtonColor: '#ff8c00'
+                  });
+                  return;
+              }
+
+              const submitBtn = document.getElementById('submitBtn');
+              const title = document.getElementById('pName').value.trim();
+              const description = document.getElementById('productDescription').value.trim();
+              const category = document.getElementById('productCategory').value;
+              const price = parseFloat(document.getElementById('pPrice').value);
+
+              submitBtn.disabled = true;
+              submitBtn.innerText = "... جاري معالجة ونشر منتجك حياً في المتجر";
+
+              // الرفع المباشر والتلقائي لجدول الـ products بالسيرفر
+              db.collection("products").add({
+                  title: title,
+                  description: description,
+                  category: category,
+                  price: price,
+                  imageUrl: base64Image || "assets/logo.jpg",
+                  sellerId: currentSeller.uid,
+                  createdAt: firebase.firestore.FieldValue.serverTimestamp()
+              })
+              .then(() => {
+                  Swal.fire({
+                      title: 'تم النشر بنجاح! 🎉',
+                      text: `رائع! تم نشر "${title}" وتفعيله تلقائياً في واجهة المتجر الرئيسية للزبائن.`,
+                      icon: 'success',
+                      confirmButtonColor: '#ff8c00'
+                  });
+
+                  document.getElementById('productForm').reset();
+                  document.getElementById('imagePreview').style.display = 'none';
+                  document.getElementById('uploadIcon').style.display = 'block';
+                  document.getElementById('uploadText').style.display = 'block';
+                  document.getElementById('calcValue').innerText = "0.00";
+                  base64Image = "";
+                  submitBtn.disabled = false;
+                  submitBtn.innerText = "نشر المنتج الآن";
+              })
+              .catch((error) => {
+                  console.error("خطأ أثناء الرفع الحقيقي:", error);
+                  Swal.fire({
+                      title: 'فشل النشر',
+                      text: error.message,
+                      icon: 'error',
+                      confirmButtonColor: '#ff8c00'
+                  });
+                  submitBtn.disabled = false;
+                  submitBtn.innerText = "نشر المنتج الآن";
+              });
+          };
+
+      // دالة معاينة وصباغة المنتج مع تقليص الحجم تلقائياً لتفادي فشل النشر
+          function previewImage(event) {
+              const file = event.target.files[0];
+              if (!file) return;
+
+              const reader = new FileReader();
+              reader.onload = function(e) {
+                  const img = new Image();
+                  img.src = e.target.result;
+
+                  img.onload = function() {
+                      const canvas = document.createElement('canvas');
+                      const ctx = canvas.getContext('2d');
+
+                      const MAX_WIDTH = 800;
+                      const MAX_HEIGHT = 800;
+                      let width = img.width;
+                      let height = img.height;
+
+                      if (width > height) {
+                          if (width > MAX_WIDTH) {
+                              height *= MAX_WIDTH / width;
+                              width = MAX_WIDTH;
+                          }
+                      } else {
+                          if (height > MAX_HEIGHT) {
+                              width *= MAX_HEIGHT / height;
+                              height = MAX_HEIGHT;
+                          }
+                      }
+
+                      canvas.width = width;
+                      canvas.height = height;
+                      ctx.drawImage(img, 0, 0, width, height);
+
+                      // ضغط جودة الصورة إلى 70% ليصبح حجمها صغيراً جداً ويقبلها الفايربيز فوراً
+                      base64Image = canvas.toDataURL('image/jpeg', 0.7);
+
+                      const output = document.getElementById('imagePreview');
+                      if (output) {
+                          output.src = base64Image;
+                          output.style.display = 'block';
+                      }
+
+                      if (document.getElementById('uploadIcon')) document.getElementById('uploadIcon').style.display = 'none';
+                      if (document.getElementById('uploadText')) document.getElementById('uploadText').style.display = 'none';
+                  };
+              };
+              reader.readAsDataURL(file);
+          }
+
+          // دالة تسجيل الخروج الحقيقية
+          function logoutSeller() {
+              auth.signOut().then(() => {
+                  window.location.href = "../index.html";
+              });
+          }
+    </script>
+  </body>
+</html>

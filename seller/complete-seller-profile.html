@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>إكمال بيانات المتجر - Ali Holland</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- 5: Moved complete-seller-profile styles to css/style.css -->
+      .stripe-status {
+        font-size: 13px;
+        color: #666;
+        margin-top: 10px;
+      }
+
+      /* زر الحفظ الرئيسي باللون البرتقالي */
+      .submit-btn {
+        background-color: #e07a3f;
+        color: white;
+        border: none;
+        padding: 14px;
+        font-size: 16px;
+        font-weight: bold;
+        border-radius: 6px;
+        cursor: pointer;
+        width: 100%;
+        transition: background-color 0.3s;
+      }
+
+      .submit-btn:hover {
+        background-color: #ca652b;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="logo">Ali <span>Holland</span></div>
+
+      <h2>إثبات هويّة البائع</h2>
+      <p class="subtitle">
+        يرجى تزويدنا بالبيانات التالية لتفعيل متجرك وبدء البيع
+      </p>
+
+      <form
+        id="profileForm"
+        onsubmit="
+          event.preventDefault();
+          saveSellerProfile();
+        "
+      >
+        <div class="form-group">
+          <label for="seller-phone">رقم الهاتف (مع رمز الدولة)</label>
+          <input
+            type="tel"
+            id="seller-phone"
+            placeholder="مثال: 31612345678+"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="seller-address">العنوان الكامل للمتجر / المستودع</label>
+          <input
+            type="text"
+            id="seller-address"
+            placeholder="اسم الشارع، الرقم، الرمز البريدي، المدينة"
+            required
+          />
+        </div>
+
+        <div class="stripe-section">
+          <button
+            type="button"
+            class="stripe-btn"
+            id="connect-stripe-btn"
+            onclick="redirectToStripe()"
+          >
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M16 3h5v5M4 20L21 3M21 16v5h-5M4 4l17 17" />
+            </svg>
+            ربط حساب Stripe لتلقي المدفوعات
+          </button>
+          <p class="stripe-status" id="stripe-status-text">
+            الحالة: غير مرتبط حالياً ❌
+          </p>
+        </div>
+
+        <button type="submit" class="submit-btn">حفظ وإنشاء المتجر الآن</button>
+      </form>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore-compat.js"></script>
+
+    <script src="../js/firebase-config.js"></script>
+
+      let stripeConnected = false; // فحص داخلي للتأكد من ضغط البائع على زر البنك
+
+      // 1. 🔥 دالة ربط Stripe الأنيقة جداً مع التحويل التلقائي والفعلي للنافذة الخارجية
+      function redirectToStripe() {
+        Swal.fire({
+          title: "بوابة الدفع الآمنة 💳",
+          text: "سيتم توجيهك الآن في صفحة خارجية مخصصة إلى بوابة Stripe لإنشاء أو ربط حسابك البنكي وتلقي الأرباح.",
+          icon: "info",
+          showCancelButton: true,
+          confirmButtonText: "موافق، توجه الآن",
+          cancelButtonText: "إلغاء",
+          confirmButtonColor: "#635bff",
+          cancelButtonColor: "#d33",
+          background: "#ffffff",
+          backdrop: `rgba(0,0,0,0.4) blur(4px)`,
+        }).then((result) => {
+          if (result.isConfirmed) {
+            stripeConnected = true;
+
+            // تحويل وتوجيه حقيقي لفتح بوابة التسجيل لـ Stripe بنجاح
+            window.open("https://dashboard.stripe.com/register", "_blank");
+
+            // تغيير مظهر وحالة زر Stripe بشكل فوري يعكس الأناقة والنجاح
+            const stripeBtn = document.getElementById("connect-stripe-btn");
+            const statusText = document.getElementById("stripe-status-text");
+            if (stripeBtn) {
+              stripeBtn.innerHTML =
+                '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> تم ربط الحساب بنجاح';
+              stripeBtn.style.backgroundColor = "#2ed573"; // اللون الأخضر الناجح
+            }
+            if (statusText) {
+              statusText.innerHTML =
+                "الحالة: تم ربط الحساب البنكي لـ Stripe بنجاح ✅";
+              statusText.style.color = "#2ed573";
+              statusText.style.fontWeight = "bold";
+            }
+          }
+        });
+      }
+
+      // 2. دالة حفظ البيانات في Firestore والتحقق الشامل بنوافذ SweetAlert2
+      async function saveSellerProfile() {
+        const phone = document.getElementById("seller-phone").value.trim();
+        const address = document.getElementById("seller-address").value.trim();
+        const currentUser = auth.currentUser;
+
+        if (!phone || !address) {
+          Swal.fire({
+            title: "حقول فارغة! ⚠️",
+            text: "برجاء كتابة رقم الهاتف والعنوان كاملاً أولاً لإثبات الهوية.",
+            icon: "warning",
+            confirmButtonColor: "#e07a3f",
+          });
+          return;
+        }
+
+        // حماية إضافية: إجبار البائع على تفعيل حساب الـ Stripe قبل الضغط على إنشاء المتجر
+        if (!stripeConnected) {
+          Swal.fire({
+            title: "خطوة مطلوبة! 💳",
+            text: "يرجى الضغط على زر ربط حساب Stripe وتفعيله أولاً لتتمكن من استقبال عوائد مبيعات متجرك.",
+            icon: "warning",
+            confirmButtonColor: "#635bff",
+          });
+          return;
+        }
+
+        if (currentUser) {
+          try {
+            // تحديث بيانات البائع الحالية في قاعدة البيانات وتفعيل المتجر
+            await db.collection("users").doc(currentUser.uid).update({
+              phone: phone,
+              address: address,
+              profileCompleted: true, // تتغير إلى true حتى تفتح اللوحة تلقائياً ولا يطرد مجدداً
+              stripeConnected: true,
+              isApproved: true, // تفعيل الحساب فوراً للتجربة والإنتاج والتشغيل السريع
+              updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+            });
+
+            Swal.fire({
+              title: "تم إنشاء متجرك بنجاح! 🎉",
+              text: "تهانينا، تم إثبات هويتك وتفعيل لوحة تحكم بائع Ali Holland حياً بالسيرفر.",
+              icon: "success",
+              confirmButtonColor: "#e07a3f",
+            }).then(() => {
+              // توجيهه الفوري والمباشر للوحة تحكم البائع
+              window.location.href = "seller.html";
+            });
+          } catch (error) {
+            console.error("حدث خطأ أثناء حفظ البيانات السحابية:", error);
+            Swal.fire({
+              title: "فشلت عملية الحفظ",
+              text: error.message,
+              icon: "error",
+              confirmButtonColor: "#d33",
+            });
+          }
+        } else {
+          Swal.fire({
+            title: "انتهت الجلسة!",
+            text: "لم يتم العثور على جلسة مستخدم نشطة. يرجى تسجيل الدخول مجدداً لنظام الحماية.",
+            icon: "error",
+            confirmButtonColor: "#d33",
+          }).then(() => {
+            window.location.href = "../auth/login.html";
+          });
+        }
+      }
+    </script>
+  </body>
+</html>

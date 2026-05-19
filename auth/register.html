@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>إنشاء حساب - Ali Holland</title>
+    <link rel="stylesheet" href="../css/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+  </head>
+  <body class="auth-page">
+    <div class="login-container wide">
+      <div class="auth-logo">
+        <a href="../index.html">
+          <h2 class="auth-brand">
+            Ali <span class="brand-primary">Holland</span>
+          </h2>
+        </a>
+      </div>
+
+      <div class="auth-box">
+        <h1 style="text-align: center; margin-bottom: 10px">إنشاء حساب جديد</h1>
+        <p style="text-align: center; color: #666; margin-bottom: 25px">
+          يرجى اختيار نوع الحساب للبدء بموقعنا
+        </p>
+
+        <form id="signupForm">
+          <div class="user-type-selection">
+            <label class="type-card">
+              <input type="radio" name="userRole" value="seller" checked />
+              <div class="card-content">
+                <i
+                  class="fas fa-store"
+                  style="
+                    font-size: 2rem;
+                    color: #ff8c00;
+                    margin-bottom: 10px;
+                    display: block;
+                  "
+                ></i>
+                <strong>حساب بائع</strong>
+                <p style="font-size: 11px; margin-top: 5px">
+                  أريد عرض منتجاتي والبيع عبر المتجر (عمولة4%)
+                </p>
+              </div>
+            </label>
+
+            <label class="type-card">
+              <input type="radio" name="userRole" value="customer" />
+              <div class="card-content">
+                <i
+                  class="fas fa-shopping-basket"
+                  style="
+                    font-size: 2rem;
+                    color: #2d3436;
+                    margin-bottom: 10px;
+                    display: block;
+                  "
+                ></i>
+                <strong>حساب زبون</strong>
+                <p style="font-size: 11px; margin-top: 5px">
+                  أريد تصفح السلع والشراء والتسوق من البائعين
+                </p>
+              </div>
+            </label>
+          </div>
+
+          <div class="input-group">
+            <label>الاسم الكامل</label>
+            <input
+              type="text"
+              id="userName"
+              placeholder="مثلاً: علي محمد"
+              required
+            />
+          </div>
+
+          <div class="input-group">
+            <label>البريد الإلكتروني</label>
+            <input
+              type="email"
+              id="signupEmail"
+              placeholder="name@example.com"
+              required
+            />
+          </div>
+
+          <div class="input-group">
+            <label>كلمة المرور</label>
+            <input
+              type="password"
+              id="signupPass"
+              placeholder="أدخل كلمة مرور قوية"
+              required
+            />
+          </div>
+
+          <button type="submit" class="add-btn" style="margin-top: 10px">
+            إنشاء الحساب الآن
+          </button>
+        </form>
+
+        <div
+          class="auth-footer"
+          style="text-align: center; margin-top: 20px; font-size: 14px"
+        >
+          لديك حساب بالفعل؟
+          <a
+            href="login.html"
+            style="color: #ff8c00; text-decoration: none; font-weight: bold"
+            >دخول</a
+          >
+        </div>
+      </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore-compat.js"></script>
+    <script src="../js/firebase-config.js"></script>
+
+    <script>
+      // 4: Firebase initialized in ../js/firebase-config.js (centralized)
+      // window.db and window.auth are available globally for auth.js
+    </script>
+
+    <script src="../js/auth.js"></script>
+  </body>
+</html>
