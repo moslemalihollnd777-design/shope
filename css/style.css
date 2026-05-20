@@ -68,6 +68,41 @@ body {
     border-radius: 50px;
     cursor: pointer;
 }
+/* Hide Google Translate top banner */
+.goog-te-banner-frame.skiptranslate {
+  display: none !important;
+}
+
+/* Prevent page from moving down after translation */
+body {
+  top: 0 !important;
+}
+
+/* Hide Google Translate iframe */
+iframe.skiptranslate {
+  display: none !important;
+}
+
+/* RTL layout support */
+html[dir="rtl"] body {
+  direction: rtl;
+  text-align: right;
+}
+
+/* LTR layout support */
+html[dir="ltr"] body {
+  direction: ltr;
+  text-align: left;
+}
+
+/* Keep hero section aligned correctly in both directions */
+html[dir="ltr"] .hero-section {
+  direction: ltr;
+}
+
+html[dir="rtl"] .hero-section {
+  direction: rtl;
+}
 
 /* قسم الـ Hero (العرض الرئيسي) */
 .hero-section {
