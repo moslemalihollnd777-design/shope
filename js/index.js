@@ -1,26 +1,76 @@
 // Page-specific logic for index.html
-window.googleTranslateElementInit = function () {
-  new google.translate.TranslateElement(
-    {
-      pageLanguage: "ar",
-      includedLanguages: "en,nl,ar",
-      layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-      autoDisplay: false,
-    },
-    "google_translate_element",
-  );
-};
+// window.googleTranslateElementInit = function () {
+//   new google.translate.TranslateElement(
+//     {
+//       pageLanguage: "ar",
+//       includedLanguages: "en,nl,ar",
+//       layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+//       autoDisplay: false,
+//     },
+//     "google_translate_element",
+//   );
+// };
 
-function changeLanguage(langCode) {
-  const select = document.querySelector("select.goog-te-combo");
-  if (select) {
-    select.value = langCode;
-    select.dispatchEvent(new Event("change"));
-  } else {
-    console.log("جاري محاولة الاتصال بمحرك الترجمة...");
-    setTimeout(() => changeLanguage(langCode), 1000);
-  }
-}
+// function changeLanguage(langCode) {
+//   const select = document.querySelector("select.goog-te-combo");
+//   if (select) {
+//     select.value = langCode;
+//     select.dispatchEvent(new Event("change"));
+//   } else {
+//     console.log("جاري محاولة الاتصال بمحرك الترجمة...");
+//     setTimeout(() => changeLanguage(langCode), 1000);
+//   }
+// }
+
+
+      function googleTranslateElementInit() {
+        new google.translate.TranslateElement(
+          {
+            pageLanguage: "ar",
+            includedLanguages: "ar,en,nl",
+            autoDisplay: false
+          },
+          "google_translate_element"
+        );
+      }
+
+      function changeLanguage(lang) {
+        const interval = setInterval(() => {
+          const select =
+            document.querySelector(".goog-te-combo");
+
+          if (select) {
+            select.value = lang;
+            select.dispatchEvent(
+              new Event("change")
+            );
+
+            // RTL / LTR
+            if (lang === "ar") {
+              document.documentElement.dir = "rtl";
+              document.documentElement.lang = "ar";
+            } else {
+              document.documentElement.dir = "ltr";
+              document.documentElement.lang = lang;
+            }
+
+            clearInterval(interval);
+          }
+        }, 500);
+      }
+
+      // Language switcher
+      document.querySelectorAll(".lang-switcher-nav span")
+        .forEach(button => {
+
+          button.addEventListener("click", () => {
+            const lang =
+              button.dataset.lang;
+
+            changeLanguage(lang);
+          });
+
+        });
 
 function createSellerLink() {
   return `<a href="seller/seller.html" class="seller-link">لوحة تحكم البائع</a>`;
